@@ -1,14 +1,22 @@
 <h1>Listing naming terms for <%=h @naming_element.name %></h1>
 
-<table class="sortable" id="naming_terms">
+<p>
+  <%= link_to 'Back to naming elements', :controller => 'naming_elements',
+      :action => 'list_for_naming_scheme', :id => @naming_element.naming_scheme_id %> | 
+  <%= link_to 'Sort terms alphanumerically', :action => 'sort_for_naming_element',
+      :id => @naming_element.id %>
+</p>
+
+<table id="table" class="sortable" cellpadding="0" cellspacing="0" border="0">
+  <thead>
     <tr>
         <% for column in ["Term Order","Term", "Abbreviated Term", "Edit", "Delete"] %>
-            <th><%= column %></th>
+          <th><h3><%= column %></h3></th>
         <% end %>
-        <th>Move Up</th>
-        <th>Move Down</th>
+        <th class="nosort"><h3>Move Up</h3></th>
+        <th class="nosort"><h3>Move Down</h3></th>
     </tr>
-  
+  </thead> 
     <% for term in @naming_terms %>
         <tr>
             <td>
@@ -37,10 +45,7 @@
     <% end %>
 </table>
 
-<%= link_to 'Back to naming elements', :controller => 'naming_elements',
-    :action => 'list_for_naming_scheme', :id => @naming_element.naming_scheme_id %> | 
-<%= link_to 'Sort terms alphanumerically', :action => 'sort_for_naming_element',
-    :id => @naming_element.id %>
+<%= render :partial => 'shared/tinytable', :locals => {:sort_column => 0} %>
 
 <hr>
 
