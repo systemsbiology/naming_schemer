@@ -49,7 +49,7 @@ describe NamingSchemesController do
 
         request.env["HTTP_ACCEPT"] = "application/json"
         get :index
-        response.body.should == "[{\"n\":1},{\"n\":2}]"
+        response.body.should =~ /[{\"n\":\s*1},{\"n\":\s*2}]/
       end
     
     end
@@ -85,7 +85,7 @@ describe NamingSchemesController do
       it "should render the flow cell detail as json" do
         request.env["HTTP_ACCEPT"] = "application/json"
         get :show, :id => 37
-        response.body.should == "{\"n\":1}"
+        response.body.should =~ /\{\"n\":\s*1\}/
       end
     
     end
