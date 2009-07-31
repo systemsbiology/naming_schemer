@@ -29,6 +29,18 @@ describe NamingScheme do
     end
   end
 
+  describe "generating a sample group name from schemed parameters" do
+    it "should provide a string of the abbreviated terms and free text values for group elements" do
+      schemed_params = {
+        "Strain" => naming_terms(:wild_type).id, "Perturbation" => naming_terms(:heat).id,
+        "Replicate" => naming_terms(:replicateA).id, "Perturbation Time" => naming_terms(:time024).id,
+        "Subject Number" => "3283"
+      }
+      
+      @naming_scheme.generate_sample_group_name(schemed_params).should == "wt_HT_024"
+    end
+  end
+
   describe "generating a sample name from schemed parameters, where one term has no abbreviated form" do
     it "should provide a string of the abbreviated terms and free text values" do
       schemed_params = {
@@ -132,6 +144,8 @@ describe NamingScheme do
   end 
   
   it "should provide a hash of summary attributes" do
+    SiteConfig.should_receive(:site_url).and_return("http://example.com")
+
     naming_scheme = create_naming_scheme(:name => "Beast Scheme")
     
     naming_scheme.summary_hash.should == {
@@ -264,7 +278,7 @@ describe NamingScheme do
   end
 
   it "should create a new naming scheme based on a CSV of the format created by to_csv" do
-    csv_file_name = "#{RAILS_ROOT}/spec/fixtures/csv/toad_naming_scheme.csv"
+    csv_file_name = "#{RAILS_ROOT}/vendor/plugins/naming_schemer/spec/fixtures/csv/toad_naming_scheme.csv"
 
     scheme = NamingScheme.from_csv("Toad Scheme", csv_file_name)
 

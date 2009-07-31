@@ -127,6 +127,37 @@ class NamingScheme < ActiveRecord::Base
     return name
   end
   
+  def generate_sample_group_name(schemed_params)
+    name = ""
+    
+    for element in ordered_naming_elements
+      next unless element.group_element
+
+      depends_upon_element_with_no_selection = false
+      depends_upon_element = element.depends_upon_element
+      if(depends_upon_element != nil && schemed_params[depends_upon_element.name].to_i <= 0)
+        depends_upon_element_with_no_selection = true
+      end
+
+      # put an underscore between terms
+      if(name.length > 0)
+        name += "_"
+      end
+
+      if( schemed_params[element.name] != nil && !depends_upon_element_with_no_selection )
+        # free text
+        if( element.free_text )
+          name += schemed_params[element.name]
+        elsif( schemed_params[element.name].to_i > 0 &&
+               NamingTerm.find(schemed_params[element.name]).abbreviated_term != nil )
+          name += NamingTerm.find(schemed_params[element.name]).abbreviated_term
+        end
+      end
+    end
+    
+    return name
+  end
+  
   def visibilities_from_terms(sample_terms)
     # get default visibilities
     visibility = default_visibilities
