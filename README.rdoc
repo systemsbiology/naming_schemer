@@ -1,0 +1,37 @@
+= Naming Schemer
+
+This plugin provides a set of models/views/controllers for providing naming schemes (controlled 
+vocabulary) associated with a samples. It is an extraction from SLIMarray/SLIMseq, but not an 
+incredibly clean one, so it does have a number of requirements on the host application.
+
+== Install
+
+Install the plugin itself:
+
+  script/plugin install git://github.com/bmarzolf/naming_schemer.git
+
+Add the following associations to your Sample model (create one if you don't have one already):
+
+  class Sample < ActiveRecord::Base
+    belongs_to :naming_scheme
+    
+    has_many :sample_terms, :dependent => :destroy
+    has_many :sample_texts, :dependent => :destroy
+
+Add the routes to manage naming schemes in config/routes.rb
+
+  map.resources :naming_schemes
+
+There are probably other dependencies between this plugin and the host application; if you 
+find any please pass them along.
+
+== Usage
+
+Link to the naming schemes management interface with this in your views:
+
+  <%= link_to 'Naming Schemes', naming_schemes_path %>
+
+To integrate with sample CRUD interfaces in your application, there aren't any pre-made templates
+but you can refer to as an example:
+
+  http://github.com/bmarzolf/slimseq
