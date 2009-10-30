@@ -1,6 +1,9 @@
 class NamingTerm < ActiveRecord::Base
   belongs_to :naming_element
 
+  validates_format_of :abbreviated_term, :with => /\A[a-z0-9_-]+\Z/,
+    :message => "can only contain letters, numbers, underscores and hyphens"
+
   has_many :sample_terms, :dependent => :destroy
 
   def after_save
