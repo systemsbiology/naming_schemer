@@ -54,7 +54,7 @@ class NamingScheme < ActiveRecord::Base
     visibility = Array.new
     
     for element in ordered_naming_elements
-      if( schemed_params[element.name] == nil )
+      if( schemed_params[element.safe_name] == nil )
         visibility << false
       else
         visibility << true
@@ -70,10 +70,10 @@ class NamingScheme < ActiveRecord::Base
     for element in ordered_naming_elements
       # free text
       if( element.free_text )
-        if(schemed_params[element.name] == nil)
+        if(schemed_params[element.safe_name] == nil)
           text_values[element.name] = ""
         else
-          text_values[element.name] = schemed_params[element.name]
+          text_values[element.name] = schemed_params[element.safe_name]
         end
       end
     end
@@ -87,10 +87,10 @@ class NamingScheme < ActiveRecord::Base
     for n in 0..ordered_naming_elements.size-1
       element = ordered_naming_elements[n]
       if( !element.free_text )
-        if( schemed_params[element.name] == nil )
+        if( schemed_params[element.safe_name] == nil )
           selections[n] = nil
         else
-          selections[n] = schemed_params[element.name]
+          selections[n] = schemed_params[element.safe_name]
         end
       end
     end
@@ -104,7 +104,7 @@ class NamingScheme < ActiveRecord::Base
     for element in ordered_naming_elements
       depends_upon_element_with_no_selection = false
       depends_upon_element = element.depends_upon_element
-      if(depends_upon_element != nil && schemed_params[depends_upon_element.name].to_i <= 0)
+      if(depends_upon_element != nil && schemed_params[depends_upon_element.safe_name].to_i <= 0)
         depends_upon_element_with_no_selection = true
       end
 
@@ -113,13 +113,13 @@ class NamingScheme < ActiveRecord::Base
         name += "_"
       end
 
-      if( schemed_params[element.name] != nil && !depends_upon_element_with_no_selection )
+      if( schemed_params[element.safe_name] != nil && !depends_upon_element_with_no_selection )
         # free text
         if( element.free_text )
-          name += schemed_params[element.name]
-        elsif( schemed_params[element.name].to_i > 0 &&
-               NamingTerm.find(schemed_params[element.name]).abbreviated_term != nil )
-          name += NamingTerm.find(schemed_params[element.name]).abbreviated_term
+          name += schemed_params[element.safe_name]
+        elsif( schemed_params[element.safe_name].to_i > 0 &&
+               NamingTerm.find(schemed_params[element.safe_name]).abbreviated_term != nil )
+          name += NamingTerm.find(schemed_params[element.safe_name]).abbreviated_term
         end
       end
     end
@@ -135,7 +135,7 @@ class NamingScheme < ActiveRecord::Base
 
       depends_upon_element_with_no_selection = false
       depends_upon_element = element.depends_upon_element
-      if(depends_upon_element != nil && schemed_params[depends_upon_element.name].to_i <= 0)
+      if(depends_upon_element != nil && schemed_params[depends_upon_element.safe_name].to_i <= 0)
         depends_upon_element_with_no_selection = true
       end
 
@@ -144,13 +144,13 @@ class NamingScheme < ActiveRecord::Base
         name += "_"
       end
 
-      if( schemed_params[element.name] != nil && !depends_upon_element_with_no_selection )
+      if( schemed_params[element.safe_name] != nil && !depends_upon_element_with_no_selection )
         # free text
         if( element.free_text )
-          name += schemed_params[element.name]
-        elsif( schemed_params[element.name].to_i > 0 &&
-               NamingTerm.find(schemed_params[element.name]).abbreviated_term != nil )
-          name += NamingTerm.find(schemed_params[element.name]).abbreviated_term
+          name += schemed_params[element.safe_name]
+        elsif( schemed_params[element.safe_name].to_i > 0 &&
+               NamingTerm.find(schemed_params[element.safe_name]).abbreviated_term != nil )
+          name += NamingTerm.find(schemed_params[element.safe_name]).abbreviated_term
         end
       end
     end

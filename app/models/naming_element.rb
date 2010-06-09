@@ -114,4 +114,8 @@ class NamingElement < ActiveRecord::Base
       count += 1
     end
   end
+
+  def safe_name
+    name.gsub(/(\[|\]| |\(|\)|\{|\})/, '')
+  end
 end
