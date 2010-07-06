@@ -326,5 +326,15 @@ describe NamingScheme do
     elements[2].include_in_sample_description.should == true
   end
   
+  it "should provide project ids" do
+    scheme = create_naming_scheme
+    project_1 = create_project
+    project_2 = create_project
+    project_3 = create_project
+    sample_1 = create_sample(:naming_scheme => scheme, :project => project_1)
+    sample_2 = create_sample(:naming_scheme => scheme, :project => project_2)
 
+    scheme.reload.project_ids.should include(project_1.id)
+    scheme.reload.project_ids.should include(project_2.id)
+  end
 end

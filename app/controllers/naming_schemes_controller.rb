@@ -28,10 +28,10 @@ available when retrieving single naming_schemes (see GET /naming_schemes/[naming
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @naming_schemes.
-        collect{|x| x.summary_hash} 
+        collect{|x| x.summary_hash(params[:with])} 
       }
       format.json  { render :json => @naming_schemes.
-        collect{|x| x.summary_hash}.to_json 
+        collect{|x| x.summary_hash(params[:with])}.to_json 
       }
     end
   end

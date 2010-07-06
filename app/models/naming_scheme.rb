@@ -1,5 +1,7 @@
 class NamingScheme < ActiveRecord::Base
   require 'csv'
+
+  extend ApiAccessible
   
   has_many :naming_elements, :dependent => :destroy
   has_many :samples, :dependent => :destroy
@@ -218,13 +220,23 @@ class NamingScheme < ActiveRecord::Base
     return selections
   end
   
-  def summary_hash
-    return {
+  def summary_hash(with)
+    hash = {
       :id => id,
       :name => name,
       :updated_at => updated_at,
       :uri => "#{SiteConfig.site_url}/naming_schemes/#{id}"
     }
+
+    with.split(",").each do |key|
+      key = key.to_sym
+
+      if NamingScheme.api_methods.include? key
+        hash[key] = self.send(key)
+      end
+    end
+
+    return hash
   end
   
   def detail_hash
@@ -350,6 +362,13 @@ class NamingScheme < ActiveRecord::Base
     return naming_scheme
   end
 
+  api_reader :project_ids
+  def project_ids
+    projects = Project.find(:all, :include => :samples, :conditions => {"samples.naming_scheme_id" => id})
+
+    return projects.collect {|p| p.id}
+  end
+
   private
 
   def to_yes_or_no(bool)
@@ -364,4 +383,5 @@ class NamingScheme < ActiveRecord::Base
       return false
     end
   end
+
 end
