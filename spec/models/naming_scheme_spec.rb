@@ -337,4 +337,20 @@ describe NamingScheme do
     scheme.reload.project_ids.should include(project_1.id)
     scheme.reload.project_ids.should include(project_2.id)
   end
+
+  it "should provide naming schemes that are populated for a user" do
+    lab_group = mock_model(LabGroup)
+    user = mock_model(User, :get_lab_group_ids => [lab_group.id])
+
+    scheme_1 = create_naming_scheme
+    scheme_2 = create_naming_scheme
+    project_1 = create_project(:lab_group => lab_group)
+    project_2 = create_project(:lab_group => lab_group)
+    project_3 = create_project
+    sample_1 = create_sample(:naming_scheme => scheme_1, :project => project_1)
+    sample_2 = create_sample(:naming_scheme => scheme_1, :project => project_2)
+    sample_3 = create_sample(:naming_scheme => scheme_2, :project => project_3)
+
+    NamingScheme.populated_for_user(user).should == [scheme_1]
+  end
 end

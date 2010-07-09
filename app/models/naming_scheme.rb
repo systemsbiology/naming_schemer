@@ -220,7 +220,7 @@ class NamingScheme < ActiveRecord::Base
     return selections
   end
   
-  def summary_hash(with)
+  def summary_hash(with = "")
     hash = {
       :id => id,
       :name => name,
@@ -367,6 +367,18 @@ class NamingScheme < ActiveRecord::Base
     projects = Project.find(:all, :include => :samples, :conditions => {"samples.naming_scheme_id" => id})
 
     return projects.collect {|p| p.id}
+  end
+
+  def self.populated_for_user(user)
+    all_schemes = NamingScheme.find(:all, :order => "name ASC")
+
+    lab_group_ids = user.get_lab_group_ids
+
+    populated_schemes = all_schemes.select do |scheme|
+      scheme.samples.find(:all, :include => :project, :conditions => ["projects.lab_group_id IN (?)", lab_group_ids]).size > 0
+    end
+
+    return populated_schemes
   end
 
   private

@@ -7,7 +7,7 @@ a particular naming_scheme.
 
 class NamingSchemesController < ApplicationController
   before_filter :login_required
-  before_filter :staff_or_admin_required
+  before_filter :staff_or_admin_required, :except => :index
 
 =begin rapidoc
 url:: /naming_schemes
@@ -23,7 +23,11 @@ available when retrieving single naming_schemes (see GET /naming_schemes/[naming
 =end
   
   def index
-    @naming_schemes = NamingScheme.find(:all, :order => "name ASC")
+    if params[:populated_only]
+      @naming_schemes = NamingScheme.populated_for_user(current_user)
+    else
+      @naming_schemes = NamingScheme.find(:all, :order => "name ASC")
+    end
 
     respond_to do |format|
       format.html # index.rhtml
