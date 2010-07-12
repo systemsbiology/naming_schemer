@@ -220,7 +220,7 @@ class NamingScheme < ActiveRecord::Base
     return selections
   end
   
-  def summary_hash(with = "")
+  def summary_hash(with = nil)
     hash = {
       :id => id,
       :name => name,
@@ -228,11 +228,13 @@ class NamingScheme < ActiveRecord::Base
       :uri => "#{SiteConfig.site_url}/naming_schemes/#{id}"
     }
 
-    with.split(",").each do |key|
-      key = key.to_sym
+    if(with)
+      with.split(",").each do |key|
+        key = key.to_sym
 
-      if NamingScheme.api_methods.include? key
-        hash[key] = self.send(key)
+        if NamingScheme.api_methods.include? key
+          hash[key] = self.send(key)
+        end
       end
     end
 
