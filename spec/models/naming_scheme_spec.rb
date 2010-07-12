@@ -21,8 +21,8 @@ describe NamingScheme do
     it "should provide a string of the abbreviated terms and free text values" do
       schemed_params = {
         "Strain" => naming_terms(:wild_type).id, "Perturbation" => naming_terms(:heat).id,
-        "Replicate" => naming_terms(:replicateA).id, "Perturbation Time" => naming_terms(:time024).id,
-        "Subject Number" => "3283"
+        "Replicate" => naming_terms(:replicateA).id, "PerturbationTime" => naming_terms(:time024).id,
+        "SubjectNumber" => "3283"
       }
       
       @naming_scheme.generate_sample_description(schemed_params).should == "wt_HT_024_A_3283"
@@ -33,8 +33,8 @@ describe NamingScheme do
     it "should provide a string of the abbreviated terms and free text values for group elements" do
       schemed_params = {
         "Strain" => naming_terms(:wild_type).id, "Perturbation" => naming_terms(:heat).id,
-        "Replicate" => naming_terms(:replicateA).id, "Perturbation Time" => naming_terms(:time024).id,
-        "Subject Number" => "3283"
+        "Replicate" => naming_terms(:replicateA).id, "PerturbationTime" => naming_terms(:time024).id,
+        "SubjectNumber" => "3283"
       }
       
       @naming_scheme.generate_sample_group_name(schemed_params).should == "wt_HT_024"
@@ -45,8 +45,8 @@ describe NamingScheme do
     it "should provide a string of the abbreviated terms and free text values" do
       schemed_params = {
         "Strain" => naming_terms(:wild_type).id, "Perturbation" => naming_terms(:none).id,
-        "Replicate" => naming_terms(:replicateA).id, "Perturbation Time" => naming_terms(:time024).id,
-        "Subject Number" => "3283"
+        "Replicate" => naming_terms(:replicateA).id, "PerturbationTime" => naming_terms(:time024).id,
+        "SubjectNumber" => "3283"
       }
 
       @naming_scheme.generate_sample_description(schemed_params).should == "wt__024_A_3283"
@@ -57,8 +57,8 @@ describe NamingScheme do
     it "should provide a string of the abbreviated terms and free text values" do
       schemed_params = {
         "Strain" => naming_terms(:wild_type).id, "Perturbation" => "-1",
-        "Replicate" => naming_terms(:replicateA).id, "Perturbation Time" => naming_terms(:time024).id,
-        "Subject Number" => "3283"
+        "Replicate" => naming_terms(:replicateA).id, "PerturbationTime" => naming_terms(:time024).id,
+        "SubjectNumber" => "3283"
       }
       
       @naming_scheme.generate_sample_description(schemed_params).should == "wt___A_3283"
@@ -76,8 +76,8 @@ describe NamingScheme do
   it "should provide the correct visibilities from parameters" do
     schemed_params = {
         "Strain" => naming_terms(:wild_type).id, "Perturbation" => naming_terms(:heat).id,
-        "Replicate" => naming_terms(:replicateA).id, "Perturbation Time" => naming_terms(:time024).id,
-        "Subject Number" => "3283"
+        "Replicate" => naming_terms(:replicateA).id, "PerturbationTime" => naming_terms(:time024).id,
+        "SubjectNumber" => "3283"
       }
     
     expected_visibilities = [true, true, true, true, true]
@@ -89,8 +89,8 @@ describe NamingScheme do
   it "should provide the correct texts from parameters" do
     schemed_params = {
         "Strain" => naming_terms(:wild_type).id, "Perturbation" => naming_terms(:heat).id,
-        "Replicate" => naming_terms(:replicateA).id, "Perturbation Time" => naming_terms(:time024).id,
-        "Subject Number" => "3283"
+        "Replicate" => naming_terms(:replicateA).id, "PerturbationTime" => naming_terms(:time024).id,
+        "SubjectNumber" => "3283"
       }
     
     expected_texts = {"Subject Number" => "3283"}
@@ -102,8 +102,8 @@ describe NamingScheme do
   it "should provide the correct element selections from parameters" do
     schemed_params = {
         "Strain" => naming_terms(:wild_type).id, "Perturbation" => naming_terms(:heat).id,
-        "Replicate" => naming_terms(:replicateA).id, "Perturbation Time" => naming_terms(:time024).id,
-        "Subject Number" => "3283"
+        "Replicate" => naming_terms(:replicateA).id, "PerturbationTime" => naming_terms(:time024).id,
+        "SubjectNumber" => "3283"
       }
     
     expected_selections = [naming_terms(:wild_type).id, naming_terms(:heat).id,
